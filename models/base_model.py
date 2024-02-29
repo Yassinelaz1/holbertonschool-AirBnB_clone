@@ -15,27 +15,18 @@ class BaseModel:
         """
         Constructor method for BaseModel.
         Initializes instance attributes.
-        1.Define the time format for parsing and formatting dates
-        2.Check if any keyword arguments were provided
-        3.Iterate through the keyword arguments
-        4.If the key is "__class__", skip it
-        5.If the key is "created_at" or "updated_at", parse the value as a datetime object
-        6.Otherwise, set the attribute with the provided value
-        7.If no keyword arguments were provided, set the id, created_at, and updated_at attributes
         """
         time_f = "%Y-%m-%dT%H:%M:%S.%f"
         if kwargs:
-            for key,value in kwargs.item():
-                if key == "__class__":
-                    continue
-                elif key == "created_at" or key =="updated_at":
-                    setattr(self, key, datetime.strptime(value,time_f))
-                else:
-                    setattr(self,key, value)
+            for key,value in kwargs.items():
+                if key not in ["__class__", "created_at", "updated_at"]:
+                    setattr(self, key, value)
+                if key in {"created_at", "updated_at"}:
+                    setattr(self, key, datetime.strptime(value, time_f))
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.utcnow()
-            self.updated_a = datetime.utcnow()
+            self.updated_at = datetime.utcnow()
 
     def __str__(self):
         """
