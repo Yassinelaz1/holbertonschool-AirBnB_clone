@@ -5,6 +5,7 @@ File Storage
 
 import json
 from os.path import isfile
+import os
 
 
 class FileStorage:
@@ -40,10 +41,12 @@ class FileStorage:
             json.dump(dic_data, file)
 
     def reload(self):
-        if isfile(self.__file_path):
+        if os.path.exists(self.__file_path):
             with open(self.__file_path, "r") as file:
-                load_objects = json.load(file)
-                for key, value in load_objects.items():
-                    class_name, class_id = key.split(".")
-                    obj_class = eval(class_name)
-                    self.__objects[key] = obj_class(**value)
+                serialized_objects = json.load(file)
+                for key, value in serialized_objects.items():
+                    class_name, obj_id = key.split(".")
+                    module = __import__("models." + class_name, fromlist=[class_name])
+                    cls = getattr(module, class_name)
+                    obj = cls(**value)
+                    self.__objects[key] = obj
