@@ -41,12 +41,10 @@ class FileStorage:
             json.dump(dic_data, file)
 
     def reload(self):
-        if os.path.exists(self.__file_path):
-            with open(self.__file_path, "r") as file:
-                serialized_objects = json.load(file)
-                for key, value in serialized_objects.items():
-                    class_name, obj_id = key.split(".")
-                    module = __import__("models." + class_name, fromlist=[class_name])
-                    cls = getattr(module, class_name)
-                    obj = cls(**value)
-                    self.__objects[key] = obj
+        try:
+            with open(self.__file_path, 'r', encoding="UTF8") as f:
+                for key, value in json.load(f).items():
+                    attri_value = eval(value["__class__"])(**value)
+                    self.__objects[key] = attri_value
+        except FileNotFoundError:
+            pass
