@@ -38,6 +38,7 @@ class FileStorage:
             dic_data[obj] = objects[obj].to_dict()
         with open(FileStorage.__file_path, "w", encoding="utf-8") as file:
             json.dump(dic_data, file)
+
     def reload(self):
         """ Method to reload the objects from the file
             1. Check if the file exists
