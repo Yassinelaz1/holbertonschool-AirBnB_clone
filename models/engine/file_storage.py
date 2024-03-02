@@ -5,6 +5,7 @@ File Storage
 
 import json
 from os.path import isfile
+import os
 
 
 class FileStorage:
@@ -40,17 +41,29 @@ class FileStorage:
             json.dump(dic_data, file)
 
     def reload(self):
-        """ Method to reload the objects from the file
-            1. Check if the file exists
-            2. If it exists, open the file in read mode with utf-8 encoding
-            3. Load the objects from the file
-            4. Iterate through the loaded objects
-            5. Convert the object to its original class
-            6. Store the object in the storage dictionary"""
-        if isfile(self.__file_path):
-            with open(self.__file_path, "r") as file:
-                _load = json.load(file)
-                for key, value in _load.items():
-                    class_name, class_id = key.split(".")
-                    obj_class = eval(class_name)
-                    self.__objects[key] = obj_class(**value)
+        """Method to reload the objects from the file
+            1.Check if the file exists
+            2.Open the JSON file in read mode with utf-8 encoding
+            3.Try to load the objects from the file
+            4.Iterate through each key-value pair in the loaded dictionary
+            5.plit the key into class name and object ID
+            6.Get the class from the class name
+            7.Instantiate the class with the loaded attributes
+            8.Add the instantiated object to the __objects dictionary
+            9.Print the error message if there is an exception   
+        """
+        if os.path.isfile(FileStorage.__file_path):
+            with open(FileStorage.__file_path, "r", encoding="utf-8") as file:
+                try:
+                    dic_obj = json.load(file)
+
+                    for key, value in dic_obj.items():
+                        class_name, obj_id = key.split('.')
+
+                        cls = eval(class_name)
+
+                        instance = cls(**value)
+
+                        FileStorage.__objects[key] = instance
+                except Exception:
+                    pass
