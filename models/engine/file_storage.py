@@ -41,6 +41,7 @@ class FileStorage:
             json.dump(dic_data, file)
 
     def reload(self):
+        from models.base_model import BaseModel
         try:
             with open(self.__file_path, 'r', encoding="UTF8") as f:
                 for key, value in json.load(f).items():
