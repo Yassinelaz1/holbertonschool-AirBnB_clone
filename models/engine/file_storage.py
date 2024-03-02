@@ -32,10 +32,9 @@ class FileStorage:
         5.Open the file in write mode with utf-8 encoding
         6.Write the objects dictionary as a JSON object to the file
         """
-        all_objs = self.__objects
         obj_dict = {} 
-        for obj in all_objs.key():
-            obj_dict[obj]=all_objs[obj].to_dict()
+        for obj in self.__objects.key():
+            obj_dict[obj]=self.__objects[obj].to_dict()
         with open(self.__file_path, 'w', encoding="utf-8") as file:
             json.dump(obj_dict, file)
 
@@ -49,8 +48,8 @@ class FileStorage:
             6. Store the object in the storage dictionary"""
         if isfile(self.__file_path):
             with open(self.__file_path, "r") as file:
-                load_objects = json.load(file)
-                for key, value in load_objects.items():
+                _load = json.load(file)
+                for key, value in _load.items():
                     class_name, class_id = key.split(".")
                     obj_class = eval(class_name)
                     self.__objects[key] = obj_class(**value)
