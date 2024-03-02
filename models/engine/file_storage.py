@@ -32,12 +32,12 @@ class FileStorage:
         5.Open the file in write mode with utf-8 encoding
         6.Write the objects dictionary as a JSON object to the file
         """
-        obj_dict = {} 
-        for obj in self.__objects.key():
-            obj_dict[obj]=self.__objects[obj].to_dict()
-        with open(self.__file_path, 'w', encoding="utf-8") as file:
-            json.dump(obj_dict, file)
-
+        objects = self.__objects
+        dic_data = {}
+        for obj in objects.keys():
+            dic_data[obj] = objects[obj].to_dict()
+        with open(FileStorage.__file_path, "w", encoding="utf-8") as file:
+            json.dump(dic_data, file)
     def reload(self):
         """ Method to reload the objects from the file
             1. Check if the file exists
