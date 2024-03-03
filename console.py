@@ -7,6 +7,7 @@ class HBNBCommand(cmd.Cmd):
     """display prompt """
     prompt = "(hbnb) "
 
+
     def do_EOF(self, line):
         """Exits the console when 'EOF' is entered"""
         print()
