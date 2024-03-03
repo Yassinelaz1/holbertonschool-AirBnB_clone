@@ -43,7 +43,7 @@ class FileStorage:
     def reload(self):
         from models.base_model import BaseModel
         try:
-            with open(self.__file_path, 'r', encoding="UTF8") as f:
+            with open(self.__file_path, "r", encoding="UTF8") as f:
                 for key, value in json.load(f).items():
                     attri_value = eval(value["__class__"])(**value)
                     self.__objects[key] = attri_value
