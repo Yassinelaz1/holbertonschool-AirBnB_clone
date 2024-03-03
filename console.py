@@ -6,10 +6,11 @@ from models.engine.file_storage import FileStorage
 from models import storage
 from models.user import User
 
+
 class HBNBCommand(cmd.Cmd):
     """display prompt """
     prompt = "(hbnb) "
-    classes = ["BaseModel", "User"]
+    classes = ['BaseModel', 'User']
 
     def do_EOF(self, line):
         """Exits the console when 'EOF' is entered"""
