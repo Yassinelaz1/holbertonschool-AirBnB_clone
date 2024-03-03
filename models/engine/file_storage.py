@@ -6,7 +6,7 @@ File Storage
 import json
 from os.path import isfile
 import os
-from models.user import User
+
 
 
 class FileStorage:
@@ -43,6 +43,7 @@ class FileStorage:
 
     def reload(self):
         from models.base_model import BaseModel
+        from models.user import User
         try:
             with open(self.__file_path, "r", encoding="UTF8") as f:
                 for key, value in json.load(f).items():
