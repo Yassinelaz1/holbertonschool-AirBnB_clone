@@ -5,12 +5,18 @@ from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 from models import storage
 from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
     """display prompt """
     prompt = "(hbnb) "
-    classes = ['BaseModel', 'User']
+    classes = ['BaseModel', 'User', 'Place', 'State', 'City',
+               'Amenity', 'Review']
 
     def do_EOF(self, line):
         """Exits the console when 'EOF' is entered"""
@@ -32,6 +38,11 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, arg=None):
+        """Creates a new instance of the given class and prints its id.
+
+       Args:
+           arg (str): The name of the class to create.
+       """
         if not arg:
             print("** class name missing **")
         elif arg not in HBNBCommand.classes:
@@ -41,6 +52,11 @@ class HBNBCommand(cmd.Cmd):
             storage.save()
 
     def do_show(self, arg):
+        """Prints the string representation of the given instance.
+
+       Args:
+           arg (str): The name of the class and the id of the instance.
+       """
         arg_list = parse(arg)
         obj_dict = storage.all()
         if len(arg_list) == 0:
@@ -53,8 +69,13 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
         else:
             print(obj_dict["{}.{}".format(arg_list[0], arg_list[1])])
-    
+
     def do_destroy(self, arg):
+        """Deletes the given instance.
+
+       Args:
+           arg (str): The name of the class and the id of the instance.
+       """
         arg_list = parse(arg)
         obj_dict = storage.all()
         if len(arg_list) == 0:
@@ -68,8 +89,13 @@ class HBNBCommand(cmd.Cmd):
         else:
             del obj_dict["{}.{}".format(arg_list[0], arg_list[1])]
             storage.save()
-        
+
     def do_all(self, arg):
+        """Prints the string representation of all instances of a given class.
+
+       Args:
+           arg (str): The name of the class, optional.
+       """
         arg_list = parse(arg)
         if len(
             arg_list) > 0 and arg_list[0] \
@@ -82,7 +108,11 @@ class HBNBCommand(cmd.Cmd):
                 print(obj)
 
     def do_update(self, arg):
-        """instance's attribute updated"""
+        """Updates an instance based on the class name and id.
+        Args:
+           arg (str):
+           The format is: <class name> <id> <attribute name> <attribute value>
+        """
         arg_list = parse(arg)
         obj_dict = storage.all()
         if len(arg_list) == 0:
@@ -102,12 +132,12 @@ class HBNBCommand(cmd.Cmd):
             instance = obj_dict[key]
             setattr(instance, arg_list[2], arg_list[3].strip('"'))
             storage.save()
-            
+
+
 def parse(arg):
     """Convert a series arguments to an argument list"""
     return list(map(str, arg.split()))
-      
-        
+
 
 if __name__ == '__main__':
     """Initializes the command line interface and starts the loop"""
