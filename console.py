@@ -29,14 +29,14 @@ class HBNBCommand(cmd.Cmd):
         """
         pass
 
-    def do_create(self, arg):
-        if not arg :
+    def do_create(self, arg=None):
+        if not arg:
             print("** class name missing **")
         elif arg not in HBNBCommand.classes:
             print("** class doesn't exist **")
         else:
             print(eval(arg)().id)
-            storage.save
+            storage.save()
 
     def do_show(self, arg):
         arg_list = parse(arg)
