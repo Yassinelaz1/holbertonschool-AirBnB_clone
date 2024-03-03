@@ -9,7 +9,7 @@ from models.user import User
 class HBNBCommand(cmd.Cmd):
     """display prompt """
     prompt = "(hbnb) "
-    classes = ["BaseModel"]
+    classes = ["BaseModel", "User"]
 
     def do_EOF(self, line):
         """Exits the console when 'EOF' is entered"""
