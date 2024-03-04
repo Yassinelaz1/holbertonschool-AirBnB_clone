@@ -8,7 +8,6 @@ from os.path import isfile
 import os
 
 
-
 class FileStorage:
     __file_path = "file.json"
     __objects = {}
@@ -26,7 +25,7 @@ class FileStorage:
         self.__objects[key] = obj
 
     def save(self):
-        """Method to save the objects to a file:    
+        """Method to save the objects to a file:
         1.Retrieve all objects from the storage
         2.Initialize an empty dictionary to store the objects as dictionaries
         3.Iterate through all objects
@@ -42,8 +41,24 @@ class FileStorage:
             json.dump(dic_data, file)
 
     def reload(self):
+        """reload the saved objects from a JSON file.
+        1.Open the JSON file with the saved objects and read its contents.
+        2.Load the JSON contents into a Python dictionary.
+        3.Iterate over the dictionary's items,
+                    which represent the saved objects.
+        4.Dynamically create a new instance of the corresponding
+                    class based on the saved object's class name.
+        5.Add the new instance to the self.__objects dictionary,
+                    using the original key.
+        6.If the file does not exist, no action is taken.
+        """
         from models.base_model import BaseModel
         from models.user import User
+        from models.place import Place
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.review import Review
         try:
             with open(self.__file_path, "r", encoding="UTF8") as f:
                 for key, value in json.load(f).items():
